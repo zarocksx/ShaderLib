@@ -1,0 +1,204 @@
+[gd_scene load_steps=27 format=2]
+
+[ext_resource path="res://shaders/refractive/Cube.gd" type="Script" id=1]
+
+[sub_resource type="VisualShaderNodeInput" id=1]
+input_name = "camera"
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id=2]
+
+[sub_resource type="VisualShaderNodeInput" id=3]
+input_name = "projection"
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id=4]
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=5]
+
+[sub_resource type="VisualShaderNodeTexture" id=6]
+source = 1
+
+[sub_resource type="OpenSimplexNoise" id=7]
+
+[sub_resource type="NoiseTexture" id=8]
+noise = SubResource( 7 )
+
+[sub_resource type="VisualShaderNodeTexture" id=9]
+output_port_for_preview = 0
+texture = SubResource( 8 )
+
+[sub_resource type="VisualShaderNodeInput" id=10]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorOp" id=11]
+
+[sub_resource type="VisualShaderNodeInput" id=12]
+input_name = "inv_projection"
+
+[sub_resource type="VisualShaderNodeInput" id=13]
+input_name = "screen_uv"
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id=14]
+
+[sub_resource type="VisualShaderNodeInput" id=15]
+input_name = "inv_camera"
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id=16]
+
+[sub_resource type="VisualShaderNodeInput" id=17]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeVectorRefract" id=18]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0, 0, 0 ), 2, 1.1 ]
+
+[sub_resource type="VisualShader" id=19]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:12
+	mat4 n_out12p0 = PROJECTION_MATRIX;
+
+// Input:10
+	mat4 n_out10p0 = CAMERA_MATRIX;
+
+// Input:6
+	mat4 n_out6p0 = INV_CAMERA_MATRIX;
+
+// Input:2
+	mat4 n_out2p0 = INV_PROJECTION_MATRIX;
+
+// Input:3
+	vec3 n_out3p0 = vec3(SCREEN_UV, 0.0);
+
+// TransformVectorMult:5
+	vec3 n_out5p0 = (n_out2p0 * vec4(n_out3p0, 1.0)).xyz;
+
+// TransformVectorMult:7
+	vec3 n_out7p0 = (n_out6p0 * vec4(n_out5p0, 1.0)).xyz;
+
+// Input:8
+	vec3 n_out8p0 = NORMAL;
+
+// Refract:9
+	float n_in9p2 = 1.10000;
+	vec3 n_out9p0 = refract(n_out7p0, n_out8p0, n_in9p2);
+
+// TransformVectorMult:11
+	vec3 n_out11p0 = (n_out10p0 * vec4(n_out9p0, 1.0)).xyz;
+
+// TransformVectorMult:13
+	vec3 n_out13p0 = (n_out12p0 * vec4(n_out11p0, 1.0)).xyz;
+
+// Scalar:14
+	float n_out14p0 = 0.000000;
+
+// Texture:15
+	vec3 n_out15p0;
+	float n_out15p1;
+	{
+		vec4 _tex_read = textureLod(SCREEN_TEXTURE, n_out13p0.xy, n_out14p0);
+		n_out15p0 = _tex_read.rgb;
+		n_out15p1 = _tex_read.a;
+	}
+
+// Output:0
+	ALBEDO = n_out15p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( 201, 230.5 )
+nodes/fragment/0/position = Vector2( 1280, 60 )
+nodes/fragment/2/node = SubResource( 12 )
+nodes/fragment/2/position = Vector2( -624, 88 )
+nodes/fragment/3/node = SubResource( 13 )
+nodes/fragment/3/position = Vector2( -620, 180 )
+nodes/fragment/5/node = SubResource( 14 )
+nodes/fragment/5/position = Vector2( -380, 140 )
+nodes/fragment/6/node = SubResource( 15 )
+nodes/fragment/6/position = Vector2( -340, 60 )
+nodes/fragment/7/node = SubResource( 16 )
+nodes/fragment/7/position = Vector2( -120, 60 )
+nodes/fragment/8/node = SubResource( 17 )
+nodes/fragment/8/position = Vector2( -80, 180 )
+nodes/fragment/9/node = SubResource( 18 )
+nodes/fragment/9/position = Vector2( 140, 160 )
+nodes/fragment/10/node = SubResource( 1 )
+nodes/fragment/10/position = Vector2( 140, 80 )
+nodes/fragment/11/node = SubResource( 2 )
+nodes/fragment/11/position = Vector2( 320, 160 )
+nodes/fragment/12/node = SubResource( 3 )
+nodes/fragment/12/position = Vector2( 360, 80 )
+nodes/fragment/13/node = SubResource( 4 )
+nodes/fragment/13/position = Vector2( 560, 100 )
+nodes/fragment/14/node = SubResource( 5 )
+nodes/fragment/14/position = Vector2( 600, 220 )
+nodes/fragment/15/node = SubResource( 6 )
+nodes/fragment/15/position = Vector2( 880, 140 )
+nodes/fragment/16/node = SubResource( 9 )
+nodes/fragment/16/position = Vector2( 400, 240 )
+nodes/fragment/18/node = SubResource( 10 )
+nodes/fragment/18/position = Vector2( 203, 341.5 )
+nodes/fragment/19/node = SubResource( 11 )
+nodes/fragment/19/position = Vector2( 695, 331.5 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 5, 0, 3, 0, 5, 1, 6, 0, 7, 0, 5, 0, 7, 1, 8, 0, 9, 1, 7, 0, 9, 0, 10, 0, 11, 0, 9, 0, 11, 1, 11, 0, 13, 1, 12, 0, 13, 0, 14, 0, 15, 1, 18, 0, 16, 0, 15, 0, 0, 0, 13, 0, 19, 0, 16, 0, 19, 1, 13, 0, 15, 0 )
+
+[sub_resource type="ShaderMaterial" id=20]
+resource_local_to_scene = true
+shader = SubResource( 19 )
+
+[sub_resource type="SphereMesh" id=21]
+resource_local_to_scene = true
+material = SubResource( 20 )
+radius = 6.0
+height = 12.0
+
+[sub_resource type="Gradient" id=22]
+offsets = PoolRealArray( 0, 0.175, 0.36875, 0.54375, 0.70625, 0.86875, 1 )
+colors = PoolColorArray( 0, 0, 0, 1, 0.21875, 1, 0, 1, 1, 0.632813, 0, 1, 0, 0.273438, 1, 1, 1, 0, 0, 1, 1, 0, 0.773438, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=23]
+gradient = SubResource( 22 )
+
+[sub_resource type="SpatialMaterial" id=24]
+albedo_texture = SubResource( 23 )
+
+[sub_resource type="CubeMesh" id=25]
+material = SubResource( 24 )
+size = Vector3( 100, 100, 100 )
+
+[node name="Refract" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 0.955649, -0.294507, 0, 0.294507, 0.955649, 0, 0, 0 )
+
+[node name="Sphere" type="MeshInstance" parent="."]
+transform = Transform( -0.549898, 0, 0.835232, 0, 1, 0, -0.835232, 0, -0.549898, 0, 0, 0 )
+mesh = SubResource( 21 )
+material/0 = null
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Cube" type="MeshInstance" parent="."]
+transform = Transform( 0.168846, -0.395766, 0.902708, -0.32073, 0.843943, 0.429992, -0.932014, -0.362127, 0.0155612, 0.42086, -25.9546, -78.8619 )
+mesh = SubResource( 25 )
+material/0 = null
+script = ExtResource( 1 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.998823, -0.00683609, 0.048016, -0.0116249, 0.927414, 0.373857, -0.0470864, -0.373975, 0.926243, 0.594071, 4.13696, 11.4944 )
+current = true
+__meta__ = {
+"_editor_description_": ""
+}

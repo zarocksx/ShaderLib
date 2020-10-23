@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[ext_resource path="res://shaders/chromatic_aberrations/Chromatic.shader" type="Shader" id=1]
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/light = 1.0
+shader_param/extend = 0.391
+shader_param/offset = 30.0

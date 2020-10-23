@@ -1,0 +1,227 @@
+[gd_resource type="VisualShader" load_steps=24 format=2]
+
+[ext_resource path="res://shaders/fresnel effect/bubbleShieldTexture.png" type="Texture" id=1]
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=1]
+output_port_for_preview = 0
+function = 18
+
+[sub_resource type="VisualShaderNodeScalarOp" id=2]
+output_port_for_preview = 0
+default_input_values = [ 0, 1.0, 1, 0.0 ]
+operator = 1
+
+[sub_resource type="VisualShaderNodeDotProduct" id=3]
+
+[sub_resource type="VisualShaderNodeInput" id=4]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeVectorFunc" id=5]
+output_port_for_preview = 0
+
+[sub_resource type="VisualShaderNodeInput" id=6]
+input_name = "view"
+
+[sub_resource type="VisualShaderNodeTexture" id=7]
+output_port_for_preview = 0
+texture = ExtResource( 1 )
+
+[sub_resource type="VisualShaderNodeInput" id=8]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorOp" id=9]
+output_port_for_preview = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id=10]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 15, 15, 15 ) ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=11]
+output_port_for_preview = 0
+default_input_values = [ 0, 0.0, 1, -1.0 ]
+operator = 8
+
+[sub_resource type="VisualShaderNodeVectorOp" id=12]
+
+[sub_resource type="VisualShaderNodeColorUniform" id=13]
+uniform_name = "ColorUniform"
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=14]
+uniform_name = "metallic"
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=15]
+uniform_name = "intensity"
+
+[sub_resource type="VisualShaderNodeInput" id=16]
+output_port_for_preview = 0
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeColorUniform" id=17]
+output_port_for_preview = 0
+uniform_name = "emission"
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=18]
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=19]
+function = 19
+
+[sub_resource type="VisualShaderNodeVectorOp" id=20]
+output_port_for_preview = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=21]
+operator = 5
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=22]
+uniform_name = "freshnelExpon"
+
+[resource]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+uniform sampler2D tex_frg_23;
+uniform float freshnelExpon;
+uniform float intensity;
+uniform float metallic;
+uniform vec4 ColorUniform : hint_color;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:24
+	vec3 n_out24p0 = vec3(UV, 0.0);
+
+// VectorOp:27
+	vec3 n_in27p1 = vec3(15.00000, 15.00000, 15.00000);
+	vec3 n_out27p0 = n_out24p0 * n_in27p1;
+
+// Input:39
+	float n_out39p0 = TIME;
+
+// ScalarFunc:42
+	float n_out42p0 = -(n_out39p0);
+
+// VectorCompose:41
+	float n_in41p0 = 0.00000;
+	float n_in41p2 = 0.00000;
+	vec3 n_out41p0 = vec3(n_in41p0, n_out42p0, n_in41p2);
+
+// VectorOp:30
+	vec3 n_out30p0 = n_out27p0 + n_out41p0;
+
+// Texture:23
+	vec4 tex_frg_23_read = texture(tex_frg_23, n_out30p0.xy);
+	vec3 n_out23p0 = tex_frg_23_read.rgb;
+	float n_out23p1 = tex_frg_23_read.a;
+
+// ScalarOp:28
+	float n_in28p1 = -1.00000;
+	float n_out28p0 = atan(n_out23p1, n_in28p1);
+
+// Input:13
+	vec3 n_out13p0 = NORMAL;
+
+// Input:21
+	vec3 n_out21p0 = VIEW;
+
+// VectorFunc:14
+	vec3 n_out14p0 = normalize(n_out21p0);
+
+// DotProduct:12
+	float n_out12p0 = dot(n_out13p0, n_out14p0);
+
+// ScalarOp:11
+	float n_in11p0 = 1.00000;
+	float n_out11p0 = n_in11p0 - n_out12p0;
+
+// ScalarFunc:10
+	float n_out10p0 = min(max(n_out11p0, 0.0), 1.0);
+
+// ScalarUniform:9
+	float n_out9p0 = freshnelExpon;
+
+// ScalarOp:8
+	float n_out8p0 = pow(n_out10p0, n_out9p0);
+
+// ScalarUniform:38
+	float n_out38p0 = intensity;
+
+// VectorOp:5
+	vec3 n_out5p0 = vec3(n_out8p0) * vec3(n_out38p0);
+
+// VectorOp:25
+	vec3 n_out25p0 = vec3(n_out28p0) * n_out5p0;
+
+// ScalarUniform:37
+	float n_out37p0 = metallic;
+
+// ColorUniform:36
+	vec3 n_out36p0 = ColorUniform.rgb;
+	float n_out36p1 = ColorUniform.a;
+
+// Output:0
+	ALPHA = dot(n_out25p0, vec3(0.333333, 0.333333, 0.333333));
+	METALLIC = n_out37p0;
+	EMISSION = n_out36p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -1421, -293 )
+nodes/vertex/0/position = Vector2( 486, 54 )
+nodes/fragment/0/position = Vector2( 198, -36 )
+nodes/fragment/4/node = SubResource( 17 )
+nodes/fragment/4/position = Vector2( -864, 558 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( -864, 324 )
+nodes/fragment/8/node = SubResource( 21 )
+nodes/fragment/8/position = Vector2( -1062, 324 )
+nodes/fragment/9/node = SubResource( 22 )
+nodes/fragment/9/position = Vector2( -1260, 504 )
+nodes/fragment/10/node = SubResource( 1 )
+nodes/fragment/10/position = Vector2( -1278, 324 )
+nodes/fragment/11/node = SubResource( 2 )
+nodes/fragment/11/position = Vector2( -1458, 324 )
+nodes/fragment/12/node = SubResource( 3 )
+nodes/fragment/12/position = Vector2( -1638, 378 )
+nodes/fragment/13/node = SubResource( 4 )
+nodes/fragment/13/position = Vector2( -1728, 576 )
+nodes/fragment/14/node = SubResource( 5 )
+nodes/fragment/14/position = Vector2( -1512, 594 )
+nodes/fragment/21/node = SubResource( 6 )
+nodes/fragment/21/position = Vector2( -1710, 666 )
+nodes/fragment/23/node = SubResource( 7 )
+nodes/fragment/23/position = Vector2( -954, -162 )
+nodes/fragment/24/node = SubResource( 8 )
+nodes/fragment/24/position = Vector2( -1764, -90 )
+nodes/fragment/25/node = SubResource( 9 )
+nodes/fragment/25/position = Vector2( -378, 18 )
+nodes/fragment/27/node = SubResource( 10 )
+nodes/fragment/27/position = Vector2( -1602, -108 )
+nodes/fragment/28/node = SubResource( 11 )
+nodes/fragment/28/position = Vector2( -702, -36 )
+nodes/fragment/30/node = SubResource( 12 )
+nodes/fragment/30/position = Vector2( -1170, -90 )
+nodes/fragment/36/node = SubResource( 13 )
+nodes/fragment/36/position = Vector2( -108, 162 )
+nodes/fragment/37/node = SubResource( 14 )
+nodes/fragment/37/position = Vector2( -108, 90 )
+nodes/fragment/38/node = SubResource( 15 )
+nodes/fragment/38/position = Vector2( -1206, 630 )
+nodes/fragment/39/node = SubResource( 16 )
+nodes/fragment/39/position = Vector2( -1960, 40 )
+nodes/fragment/41/node = SubResource( 18 )
+nodes/fragment/41/position = Vector2( -1420, -20 )
+nodes/fragment/42/node = SubResource( 19 )
+nodes/fragment/42/position = Vector2( -1780, 40 )
+nodes/fragment/connections = PoolIntArray( 9, 0, 8, 1, 10, 0, 8, 0, 11, 0, 10, 0, 21, 0, 14, 0, 13, 0, 12, 0, 24, 0, 27, 0, 25, 0, 0, 1, 23, 1, 28, 0, 30, 0, 23, 0, 27, 0, 30, 0, 37, 0, 0, 2, 39, 0, 42, 0, 42, 0, 41, 1, 14, 0, 12, 1, 12, 0, 11, 1, 38, 0, 5, 1, 8, 0, 5, 0, 28, 0, 25, 0, 5, 0, 25, 1, 41, 0, 30, 1, 36, 0, 0, 5 )

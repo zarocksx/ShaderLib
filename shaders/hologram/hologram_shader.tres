@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[ext_resource path="res://shaders/hologram/hologram.tres" type="Shader" id=1]
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/ShaderColor = Color( 0, 0.74902, 0.643137, 1 )
+shader_param/shaderSpeed = 0.5
+shader_param/fresnelColor = Color( 1, 0, 0, 1 )

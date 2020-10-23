@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://shaders/atmosphere/planet/Planet.tres" type="Shader" id=1]
+[ext_resource path="res://shaders/atmosphere/Realistic_atmosphere.shader" type="Shader" id=4]
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 4 )
+shader_param/light_intensity = Vector3( 20, 20, 20 )
+shader_param/planet_radius = 6.0
+shader_param/atmo_radius = 10.0
+shader_param/beta_ray = Vector3( 1, 1, 1 )
+shader_param/beta_mie = Vector3( 1, 1, 1 )
+shader_param/beta_ambient = Vector3( 0.02, 0.02, 0.19 )
+shader_param/beta_e = 0.0
+shader_param/g = 0.8
+shader_param/height_ray = 0.05
+shader_param/height_mie = 0.25
+shader_param/density_multiplier = 1.0
+shader_param/steps_i = 32
+shader_param/steps_l = 4
+
+[sub_resource type="CubeMesh" id=3]
+material = SubResource( 2 )
+size = Vector3( 20, 20, 20 )
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = ExtResource( 1 )
+
+[sub_resource type="SphereMesh" id=4]
+material = SubResource( 9 )
+radius = 6.0
+height = 12.0
+
+[node name="Atmosphere" type="Spatial"]
+
+[node name="Atmosphere_zone" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.1358, 15.6584, -8.99182 )
+mesh = SubResource( 3 )
+material/0 = null
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Planet" type="MeshInstance" parent="Atmosphere_zone"]
+mesh = SubResource( 4 )
+material/0 = null
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.998823, -0.00683609, 0.048016, -0.0116249, 0.927414, 0.373857, -0.0470864, -0.373975, 0.926243, -12.6814, 19.8033, 2.63622 )
+current = true
+__meta__ = {
+"_editor_description_": ""
+}

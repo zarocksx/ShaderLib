@@ -1,0 +1,317 @@
+[gd_scene load_steps=34 format=2]
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=1]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=2]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=3]
+output_port_for_preview = 0
+operator = 7
+
+[sub_resource type="VisualShaderNodeScalarOp" id=4]
+default_input_values = [ 0, 1.0, 1, 1.0 ]
+operator = 1
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=5]
+output_port_for_preview = 0
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=6]
+function = 17
+
+[sub_resource type="VisualShaderNodeScalarOp" id=7]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=8]
+output_port_for_preview = 0
+operator = 7
+
+[sub_resource type="VisualShaderNodeColorUniform" id=9]
+uniform_name = "Grid_color"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=10]
+default_input_values = [ 0, 1.0, 1, 1.0 ]
+operator = 1
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=11]
+output_port_for_preview = 0
+
+[sub_resource type="VisualShaderNodeScalarClamp" id=12]
+output_port_for_preview = 0
+
+[sub_resource type="VisualShaderNodeScalarOp" id=13]
+output_port_for_preview = 0
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=14]
+output_port_for_preview = 0
+function = 12
+
+[sub_resource type="VisualShaderNodeScalarOp" id=15]
+operator = 1
+
+[sub_resource type="VisualShaderNodeScalarOp" id=16]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=17]
+operator = 1
+
+[sub_resource type="VisualShaderNodeScalarOp" id=18]
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=19]
+output_port_for_preview = 0
+function = 12
+
+[sub_resource type="VisualShaderNodeColorUniform" id=20]
+uniform_name = "Background_color"
+
+[sub_resource type="VisualShaderNodeVectorInterp" id=21]
+output_port_for_preview = 0
+
+[sub_resource type="VisualShaderNodeVectorOp" id=22]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorInterp" id=23]
+output_port_for_preview = 0
+
+[sub_resource type="VisualShaderNodeVectorOp" id=24]
+operator = 2
+
+[sub_resource type="VisualShaderNodeColorUniform" id=25]
+uniform_name = "Emission_color"
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=26]
+uniform_name = "Emission_strength"
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=27]
+uniform_name = "Line_thickness"
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=28]
+uniform_name = "Cell_count"
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=29]
+function = 17
+
+[sub_resource type="VisualShaderNodeInput" id=30]
+input_name = "uv"
+
+[sub_resource type="VisualShader" id=31]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+uniform vec4 Background_color : hint_color;
+uniform vec4 Grid_color : hint_color;
+uniform float Cell_count;
+uniform float Line_thickness;
+uniform vec4 Emission_color : hint_color;
+uniform float Emission_strength;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// ColorUniform:3
+	vec3 n_out3p0 = Background_color.rgb;
+	float n_out3p1 = Background_color.a;
+
+// ColorUniform:2
+	vec3 n_out2p0 = Grid_color.rgb;
+	float n_out2p1 = Grid_color.a;
+
+// Input:9
+	vec3 n_out9p0 = vec3(UV, 0.0);
+
+// VectorDecompose:10
+	float n_out10p0 = n_out9p0.x;
+	float n_out10p1 = n_out9p0.y;
+	float n_out10p2 = n_out9p0.z;
+
+// ScalarUniform:7
+	float n_out7p0 = Cell_count;
+
+// ScalarOp:11
+	float n_out11p0 = n_out10p0 * n_out7p0;
+
+// ScalarFunc:8
+	float n_out8p0 = fract(n_out11p0);
+
+// ScalarOp:13
+	float n_in13p0 = 1.00000;
+	float n_out13p0 = n_in13p0 - n_out8p0;
+
+// ScalarOp:12
+	float n_out12p0 = min(n_out8p0, n_out13p0);
+
+// ScalarFunc:24
+	float n_out24p0 = abs(n_out12p0);
+
+// ScalarOp:25
+	float n_out25p0 = n_out24p0 - n_out12p0;
+
+// ScalarOp:26
+	float n_out26p0 = n_out24p0 + n_out12p0;
+
+// ScalarUniform:6
+	float n_out6p0 = Line_thickness;
+
+// ScalarSmoothStep:14
+	float n_out14p0 = smoothstep(n_out25p0, n_out26p0, n_out6p0);
+
+// ScalarOp:18
+	float n_out18p0 = n_out7p0 * n_out10p1;
+
+// ScalarFunc:16
+	float n_out16p0 = fract(n_out18p0);
+
+// ScalarOp:20
+	float n_in20p0 = 1.00000;
+	float n_out20p0 = n_in20p0 - n_out16p0;
+
+// ScalarOp:19
+	float n_out19p0 = min(n_out16p0, n_out20p0);
+
+// ScalarFunc:29
+	float n_out29p0 = abs(n_out19p0);
+
+// ScalarOp:27
+	float n_out27p0 = n_out29p0 - n_out19p0;
+
+// ScalarOp:28
+	float n_out28p0 = n_out29p0 + n_out19p0;
+
+// ScalarSmoothStep:21
+	float n_out21p0 = smoothstep(n_out27p0, n_out28p0, n_out6p0);
+
+// ScalarOp:23
+	float n_out23p0 = n_out14p0 + n_out21p0;
+
+// ScalarClamp:22
+	float n_in22p1 = 0.00000;
+	float n_in22p2 = 1.00000;
+	float n_out22p0 = clamp(n_out23p0, n_in22p1, n_in22p2);
+
+// VectorMix:30
+	vec3 n_out30p0 = mix(n_out3p0, n_out2p0, vec3(n_out22p0));
+
+// VectorMix:33
+	vec3 n_out33p0 = mix(vec3(n_out3p1), vec3(n_out2p1), vec3(n_out22p0));
+
+// ColorUniform:4
+	vec3 n_out4p0 = Emission_color.rgb;
+	float n_out4p1 = Emission_color.a;
+
+// ScalarUniform:5
+	float n_out5p0 = Emission_strength;
+
+// VectorOp:32
+	vec3 n_out32p0 = n_out4p0 * vec3(n_out5p0);
+
+// VectorOp:34
+	vec3 n_out34p0 = n_out33p0 * n_out32p0;
+
+// Output:0
+	ALBEDO = n_out30p0;
+	ALPHA = dot(n_out33p0, vec3(0.333333, 0.333333, 0.333333));
+	EMISSION = n_out34p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -894.92, -44.9583 )
+nodes/fragment/2/node = SubResource( 9 )
+nodes/fragment/2/position = Vector2( -740, 300 )
+nodes/fragment/3/node = SubResource( 20 )
+nodes/fragment/3/position = Vector2( -740, 160 )
+nodes/fragment/4/node = SubResource( 25 )
+nodes/fragment/4/position = Vector2( -300, 600 )
+nodes/fragment/5/node = SubResource( 26 )
+nodes/fragment/5/position = Vector2( -300, 720 )
+nodes/fragment/6/node = SubResource( 27 )
+nodes/fragment/6/position = Vector2( -1280, 500 )
+nodes/fragment/7/node = SubResource( 28 )
+nodes/fragment/7/position = Vector2( -2600, 560 )
+nodes/fragment/8/node = SubResource( 29 )
+nodes/fragment/8/position = Vector2( -2240, 440 )
+nodes/fragment/9/node = SubResource( 30 )
+nodes/fragment/9/position = Vector2( -2860, 440 )
+nodes/fragment/10/node = SubResource( 1 )
+nodes/fragment/10/position = Vector2( -2880, 540 )
+nodes/fragment/11/node = SubResource( 2 )
+nodes/fragment/11/position = Vector2( -2440, 440 )
+nodes/fragment/12/node = SubResource( 3 )
+nodes/fragment/12/position = Vector2( -1820, 440 )
+nodes/fragment/13/node = SubResource( 4 )
+nodes/fragment/13/position = Vector2( -2020, 520 )
+nodes/fragment/14/node = SubResource( 5 )
+nodes/fragment/14/position = Vector2( -1000, 300 )
+nodes/fragment/16/node = SubResource( 6 )
+nodes/fragment/16/position = Vector2( -2220, 660 )
+nodes/fragment/18/node = SubResource( 7 )
+nodes/fragment/18/position = Vector2( -2420, 620 )
+nodes/fragment/19/node = SubResource( 8 )
+nodes/fragment/19/position = Vector2( -1800, 700 )
+nodes/fragment/20/node = SubResource( 10 )
+nodes/fragment/20/position = Vector2( -2000, 780 )
+nodes/fragment/21/node = SubResource( 11 )
+nodes/fragment/21/position = Vector2( -1000, 560 )
+nodes/fragment/22/node = SubResource( 12 )
+nodes/fragment/22/position = Vector2( -540, 440 )
+nodes/fragment/23/node = SubResource( 13 )
+nodes/fragment/23/position = Vector2( -740, 440 )
+nodes/fragment/24/node = SubResource( 14 )
+nodes/fragment/24/position = Vector2( -1620, 220 )
+nodes/fragment/25/node = SubResource( 15 )
+nodes/fragment/25/position = Vector2( -1260, 200 )
+nodes/fragment/26/node = SubResource( 16 )
+nodes/fragment/26/position = Vector2( -1260, 360 )
+nodes/fragment/27/node = SubResource( 17 )
+nodes/fragment/27/position = Vector2( -1260, 600 )
+nodes/fragment/28/node = SubResource( 18 )
+nodes/fragment/28/position = Vector2( -1260, 740 )
+nodes/fragment/29/node = SubResource( 19 )
+nodes/fragment/29/position = Vector2( -1620, 540 )
+nodes/fragment/30/node = SubResource( 21 )
+nodes/fragment/30/position = Vector2( -180, 160 )
+nodes/fragment/32/node = SubResource( 22 )
+nodes/fragment/32/position = Vector2( -60, 620 )
+nodes/fragment/33/node = SubResource( 23 )
+nodes/fragment/33/position = Vector2( -180, 380 )
+nodes/fragment/34/node = SubResource( 24 )
+nodes/fragment/34/position = Vector2( 140, 360 )
+nodes/fragment/connections = PoolIntArray( 9, 0, 10, 0, 10, 0, 11, 0, 7, 0, 11, 1, 11, 0, 8, 0, 8, 0, 12, 0, 13, 0, 12, 1, 6, 0, 14, 2, 18, 0, 16, 0, 16, 0, 19, 0, 20, 0, 19, 1, 7, 0, 18, 0, 10, 1, 18, 1, 6, 0, 21, 2, 14, 0, 23, 0, 21, 0, 23, 1, 23, 0, 22, 0, 12, 0, 24, 0, 24, 0, 25, 0, 12, 0, 25, 1, 24, 0, 26, 0, 12, 0, 26, 1, 25, 0, 14, 0, 26, 0, 14, 1, 19, 0, 29, 0, 29, 0, 27, 0, 19, 0, 27, 1, 19, 0, 28, 1, 29, 0, 28, 0, 27, 0, 21, 0, 28, 0, 21, 1, 30, 0, 0, 0, 22, 0, 30, 2, 4, 0, 32, 0, 5, 0, 32, 1, 8, 0, 13, 1, 16, 0, 20, 1, 22, 0, 33, 2, 33, 0, 0, 1, 32, 0, 34, 1, 33, 0, 34, 0, 34, 0, 0, 5, 2, 0, 30, 1, 3, 0, 30, 0, 3, 1, 33, 0, 2, 1, 33, 1 )
+
+[sub_resource type="ShaderMaterial" id=32]
+shader = SubResource( 31 )
+shader_param/Background_color = Color( 0, 0, 0, 0 )
+shader_param/Grid_color = Color( 0.32549, 0.886275, 1, 1 )
+shader_param/Cell_count = 40.0
+shader_param/Line_thickness = 0.033
+shader_param/Emission_color = Color( 0, 0.0862745, 1, 1 )
+shader_param/Emission_strength = 4.632
+
+[sub_resource type="SphereMesh" id=33]
+material = SubResource( 32 )
+radius = 6.0
+height = 12.0
+
+[node name="OutlineGrid" type="Spatial"]
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 33 )
+material/0 = null
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.998823, -0.00683609, 0.048016, -0.0116249, 0.927414, 0.373857, -0.0470864, -0.373975, 0.926243, 0.594071, 4.13696, 11.4944 )
+current = true
+__meta__ = {
+"_editor_description_": ""
+}

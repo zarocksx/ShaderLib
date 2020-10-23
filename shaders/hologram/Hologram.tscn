@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://shaders/hologram/hologram_shader.tres" type="Material" id=1]
+
+[sub_resource type="SphereMesh" id=1]
+radius = 6.0
+height = 12.0
+
+[node name="Hologram" type="Spatial"]
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )
+material/0 = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.998823, -0.00683609, 0.048016, -0.0116249, 0.927414, 0.373857, -0.0470864, -0.373975, 0.926243, 0.594071, 4.13696, 11.4944 )
+current = true
+__meta__ = {
+"_editor_description_": ""
+}

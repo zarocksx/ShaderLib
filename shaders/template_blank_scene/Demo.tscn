@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="SphereMesh" id=1]
+radius = 6.0
+height = 12.0
+
+[node name="Demo" type="Spatial"]
+
+[node name="Sphere" type="MeshInstance" parent="."]
+transform = Transform( -0.549898, 0, 0.835232, 0, 1, 0, -0.835232, 0, -0.549898, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = null
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.998823, -0.00683609, 0.048016, -0.0116249, 0.927414, 0.373857, -0.0470864, -0.373975, 0.926243, 0.594071, 4.13696, 11.4944 )
+current = true
+__meta__ = {
+"_editor_description_": ""
+}

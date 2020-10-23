@@ -1,0 +1,234 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://menu/button/Button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://style/font/Roboto-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://shaders/interrior mapping/Interrior_mapping.tscn" type="PackedScene" id=3]
+[ext_resource path="res://shaders/fresnel effect/Fresnel_effect.tscn" type="PackedScene" id=4]
+[ext_resource path="res://menu/Viewport.gd" type="Script" id=5]
+[ext_resource path="res://shaders/Dissolve/Dissolve.tscn" type="PackedScene" id=6]
+[ext_resource path="res://shaders/hologram/Hologram.tscn" type="PackedScene" id=7]
+[ext_resource path="res://shaders/chromatic_aberrations/Chromatic_aberrations.tscn" type="PackedScene" id=8]
+[ext_resource path="res://shaders/grid/OutlineGrid.tscn" type="PackedScene" id=9]
+[ext_resource path="res://shaders/atmosphere/Atmosphere.tscn" type="PackedScene" id=10]
+[ext_resource path="res://shaders/Galaxy/Galaxy.tscn" type="PackedScene" id=11]
+[ext_resource path="res://shaders/Glitch/Glitch.tscn" type="PackedScene" id=12]
+[ext_resource path="res://shaders/refractive/Refractive.tscn" type="PackedScene" id=13]
+
+[sub_resource type="Theme" id=1]
+
+[sub_resource type="StyleBoxFlat" id=2]
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.180392, 0.266667, 0.356863, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Theme" id=4]
+
+[sub_resource type="DynamicFont" id=5]
+size = 30
+use_filter = true
+font_data = ExtResource( 2 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 25.0
+margin_top = 25.0
+margin_right = -25.0
+margin_bottom = -25.0
+size_flags_vertical = 3
+theme = SubResource( 1 )
+custom_styles/bg = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer"]
+margin_right = 481.0
+margin_bottom = 550.0
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="HSplitContainer/MarginContainer"]
+margin_right = 481.0
+margin_bottom = 550.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 3 )
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/MarginContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+scroll_deadzone = 53
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="VBoxContainer" parent="HSplitContainer/MarginContainer/Panel/ScrollContainer"]
+margin_right = 469.0
+margin_bottom = 796.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 4 )
+custom_constants/separation = 25
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer"]
+margin_right = 469.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 5 )
+text = "Shader List"
+align = 1
+valign = 1
+
+[node name="Control" parent="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 61.0
+margin_right = 469.0
+margin_bottom = 112.0
+mouse_default_cursor_shape = 2
+text = "Interrior Mapping"
+
+[node name="Control2" parent="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 137.0
+margin_right = 469.0
+margin_bottom = 188.0
+mouse_default_cursor_shape = 2
+text = "Fresnel effect"
+
+[node name="Control3" parent="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 213.0
+margin_right = 469.0
+margin_bottom = 264.0
+mouse_default_cursor_shape = 2
+text = "Dissolve"
+
+[node name="Control4" parent="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 289.0
+margin_right = 469.0
+margin_bottom = 340.0
+mouse_default_cursor_shape = 2
+text = "Hologram"
+
+[node name="Control5" parent="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 365.0
+margin_right = 469.0
+margin_bottom = 416.0
+mouse_default_cursor_shape = 2
+text = "Chromatic aberrations"
+
+[node name="Control6" parent="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 441.0
+margin_right = 469.0
+margin_bottom = 492.0
+mouse_default_cursor_shape = 2
+text = "Outline Grid"
+
+[node name="Control7" parent="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 517.0
+margin_right = 469.0
+margin_bottom = 568.0
+mouse_default_cursor_shape = 2
+text = "Atmosphere"
+
+[node name="Control8" parent="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 593.0
+margin_right = 469.0
+margin_bottom = 644.0
+mouse_default_cursor_shape = 2
+text = "Galaxy"
+
+[node name="Control9" parent="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 669.0
+margin_right = 469.0
+margin_bottom = 720.0
+mouse_default_cursor_shape = 2
+text = "Glitch"
+
+[node name="Control10" parent="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 745.0
+margin_right = 469.0
+margin_bottom = 796.0
+mouse_default_cursor_shape = 2
+text = "Refractive"
+
+[node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer"]
+margin_left = 493.0
+margin_right = 974.0
+margin_bottom = 550.0
+size_flags_horizontal = 3
+split_offset = 50
+dragger_visibility = 1
+
+[node name="ViewportContainer" type="ViewportContainer" parent="HSplitContainer/VSplitContainer"]
+margin_right = 481.0
+margin_bottom = 550.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="HSplitContainer/VSplitContainer/ViewportContainer"]
+size = Vector2( 481, 550 )
+transparent_bg = true
+handle_input_locally = false
+msaa = 4
+render_target_update_mode = 3
+script = ExtResource( 5 )
+scenes = {
+"Atmosphere": ExtResource( 10 ),
+"Chromatic": ExtResource( 8 ),
+"Dissolve": ExtResource( 6 ),
+"Fresnel_effect": ExtResource( 4 ),
+"Galaxy": ExtResource( 11 ),
+"Glitch": ExtResource( 12 ),
+"Hologram": ExtResource( 7 ),
+"Interrior_mapping": ExtResource( 3 ),
+"OutlineGrid": ExtResource( 9 ),
+"Refractive": ExtResource( 13 )
+}
+[connection signal="pressed" from="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer/Control" to="HSplitContainer/VSplitContainer/ViewportContainer/Viewport" method="_on_Control_pressed" binds= [ "Interrior_mapping" ]]
+[connection signal="pressed" from="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer/Control2" to="HSplitContainer/VSplitContainer/ViewportContainer/Viewport" method="_on_Control_pressed" binds= [ "Fresnel_effect" ]]
+[connection signal="pressed" from="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer/Control3" to="HSplitContainer/VSplitContainer/ViewportContainer/Viewport" method="_on_Control_pressed" binds= [ "Dissolve" ]]
+[connection signal="pressed" from="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer/Control4" to="HSplitContainer/VSplitContainer/ViewportContainer/Viewport" method="_on_Control_pressed" binds= [ "Hologram" ]]
+[connection signal="pressed" from="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer/Control5" to="HSplitContainer/VSplitContainer/ViewportContainer/Viewport" method="_on_Control_pressed" binds= [ "Chromatic" ]]
+[connection signal="pressed" from="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer/Control6" to="HSplitContainer/VSplitContainer/ViewportContainer/Viewport" method="_on_Control_pressed" binds= [ "OutlineGrid" ]]
+[connection signal="pressed" from="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer/Control7" to="HSplitContainer/VSplitContainer/ViewportContainer/Viewport" method="_on_Control_pressed" binds= [ "Atmosphere" ]]
+[connection signal="pressed" from="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer/Control8" to="HSplitContainer/VSplitContainer/ViewportContainer/Viewport" method="_on_Control_pressed" binds= [ "Galaxy" ]]
+[connection signal="pressed" from="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer/Control9" to="HSplitContainer/VSplitContainer/ViewportContainer/Viewport" method="_on_Control_pressed" binds= [ "Glitch" ]]
+[connection signal="pressed" from="HSplitContainer/MarginContainer/Panel/ScrollContainer/HBoxContainer/Control10" to="HSplitContainer/VSplitContainer/ViewportContainer/Viewport" method="_on_Control_pressed" binds= [ "Refractive" ]]
